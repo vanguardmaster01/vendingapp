@@ -1,0 +1,264 @@
+WindowManager:
+    AdScreen:
+    ListScreen:
+    ItemScreen:
+
+<AdScreen>:
+    name:'Ad'
+    
+<ListScreen>:
+    name: 'List'
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1  # Set the color to red (RGBA format)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    GridLayout:
+        rows: 2
+        canvas.before:
+            Color:
+                rgb: (0, 0, 0)
+            Line:
+                width: 1
+                rectangle: self.x + 5 , self.y + 10, self.width - 10, self.height - 18
+
+        BoxLayout:
+            pos: self.pos
+            size_hint: (0.8, 0.2)
+            padding:20, 10, 20, 10
+            canvas.before:
+                Color:
+                    rgb: 192 ,0 ,0
+                Line:
+                    width: 2
+                    rectangle: self.x + 15 , self.y  + 10 , self.width - 30, self.height - 30 
+
+            ScrollView:
+                id: category_scroll_view
+                do_scroll_x: True
+                do_scroll_y: False
+                scroll_type: ["bars","content"]
+                bar_width: 5
+                GridLayout:
+                    id: category_layout
+                    padding: 10, 30, 10, 10
+                    size_hint: (None, 1)
+                    rows: 1
+                
+        GridLayout:
+            rows: 3
+            padding:6, 10, 6, 10
+
+            BoxLayout:         # up button layout
+                id: up_image_layout
+                canvas.before:
+                    Color:
+                        rgb: 192 ,0 ,0
+                    Rectangle:
+                        pos: self.pos[0], self.pos[1] + self.height / 2
+                        size: self.width, self.height / 2
+                size_hint_y: 0.15
+                padding: [root.WIDTH / 8, 0, root.WIDTH / 8, 0]
+                Image:
+                    id: up_image
+                    source: './img/up.png'
+                    size: self.texture_size
+
+            ImageScrollView:  # product images view
+                id: image_scroll_view
+                size: root.width, root.height
+                pos: 0, 0
+                scroll_type: ["bars","content"]
+                bar_width: 5
+                GridLayout:
+                    id:image_layout
+                    cols:2
+                    size_hint_y: None
+                    spacing: 20
+                    padding: 10, 30, 10, 20
+            BoxLayout:        # down button layout
+                canvas.before:
+                    Color:
+                        rgb: 192 ,0 ,0
+                    Rectangle:
+                        pos: self.pos
+                        size: self.width, self.height / 2
+                size_hint_y: 0.15
+                padding: [root.WIDTH / 8, 0, root.WIDTH / 8, 0]
+                Image:
+                    id: down_image
+                    source: './img/down.png'
+                    size: self.texture_size
+
+<ItemScreen>:
+    name: 'Item'
+
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1  # Set the color to red (RGBA format)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    GridLayout:
+        rows: 4
+        GridLayout:
+            id: title_layout
+            cols: 2
+            size_hint_y: 0.2
+            padding: [20, 10, 20, 10]
+            canvas.before:
+                Color:
+                    rgb: (1,1,1)
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Image:
+                id: back_img
+                source:'./img/back.png'
+                size: self.size
+                size_hint_x: None
+            Label:
+                id: title_lable
+                text: 'ProductName'
+
+        GridLayout:
+            cols: 2
+            spacing: 10
+            BoxLayout:
+                padding: 10
+                size_hint_x: .6
+                RelativeLayout:
+                    id: item_image_layout
+
+            GridLayout:
+                rows: 3
+                size_hint_x: .4
+                GridLayout:
+                    padding: 10, 50, 10, 10
+                    cols: 2
+                    spacing: 5
+                    size_hint_y:.3
+                    canvas.before:
+                        Color:
+                            rgb: (192,0,0)
+                        Line:
+                            width: 1
+                            rectangle: self.x , self.y, self.width-10, self.height-30
+
+                    GridLayout:
+                        size_hint_x:0.4
+                        rows: 5
+                        spacing: 5
+                        Label:
+                            text: 'Art.Nr:'
+                            color: (0,0,0,1)
+                            halign: 'left'
+                            valign: 'middle'
+                            size_hint_x: None
+                            text_size: self.width, None
+                        Label:
+                            text: 'Züge:'
+                            color: (0,0,0,1)
+                            halign: 'left'
+                            valign: 'middle'
+                            size_hint_x: None
+                            text_size: self.width, None
+                        Label:
+                            text: 'Nikotin:'
+                            color: (0,0,0,1)
+                            halign: 'left'
+                            size_hint_x: None
+                            text_size: self.width, None
+                        Label:
+                            text: 'Akku:'
+                            color: (0,0,0,1)
+                            size_hint_x: None
+                            halign: 'left'
+                            text_size: self.width, None
+                        Label:
+                            text: 'Tankvol.:'
+                            color: (0,0,0,1)
+                            size_hint_x: None
+                            halign: 'left'
+                            text_size: self.width, None
+                    GridLayout:
+                        size_hint_x:0.6
+                        rows: 5
+                        spacing: 5
+                        id: info_layout
+                RelativeLayout:
+                    id: price_layout
+                    size_hint_y:.15
+                    Image:
+                        source: './img/price.png'
+                        size: self.size
+                CountNumber:
+                    size_hint_y:.15
+                    canvas.before:
+                        Color:
+                            rgb: (192,0,0)
+                        Line:
+                            width: 1
+                            rectangle: self.x + 15 , self.y + 10 , self.width - 35, self.height - 20
+                        
+                        Line:
+                            width: 1
+                            rectangle: self.x + 15 , self.y + 10 , self.width - 75, self.height - 20
+                        
+       
+        GridLayout:
+            cols: 2
+            spacing: 20
+            padding: [10, 20, 10, 20]
+            size_hint: (1, 0.3)
+            BoxLayout:
+                size_hint_x: 0.5
+                padding: [10, 0, 0, 0]
+                Button:
+                    id: input_money_button
+                    text: 'Geld einwerfen'
+                    color: (1,0,0,1)
+                    halign: 'center'
+                    font_size: 30
+                    background_normal: './img/bg-btn-1.png'
+                    background_color: (1,1,1,0.5)
+                    background_down: './img/price.png'
+                    on_press:root.on_money_button_press()
+            BoxLayout:
+                size_hint_x: 0.4
+                padding: [self.width / 5, 0, self.width / 5, 0]
+                Button:
+                    id: round_button
+                    canvas.before:
+                        Color:
+                            rgba: (1,.7,0.3,1) if self.state=='normal' else (1,0,0,1)
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [20,]
+                        
+                    text: 'Buy'
+                    color: (1,1,1,1)
+                    font_size: 30
+                    background_color: (1,1,1,0)
+                    on_press: root.on_buy_press()
+
+        BoxLayout:
+            id: bigo_layout
+            size_hint:(1, 0.8)
+            orientation: 'vertical'
+            padding: 10
+            canvas.before:
+                Color:
+                    rgb: (192,0,0)
+                Line:
+                    width: 1
+                    rectangle: self.x + 5 , self.y + 20 , self.width - 10, self.height - 50
+
+
+<CountNumber>:
+<RoundedBorderGrid>:
+<ImageScrollView>:

@@ -1,0 +1,21 @@
+# ignore all images
+img/
+
+# ignore config/__pache__ directory
+config/__pycache__/
+
+# ignore sql
+DbFuncs/sql.db
+
+# ignore DbFuncs/__pache__ directory
+DbFuncs/__pycache__/
+
+# ignore model/__pache__ directory
+model/__pycache__/
+
+# ignore __pycache__ directory
+__pycache__/
+
+apis/__pycache__
+
+requirements.txt

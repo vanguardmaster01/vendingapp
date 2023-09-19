@@ -1,0 +1,44 @@
+################   windows        #########################
+visit https://www.python.org/downloads/release, download python 3.9 and install it 
+pip install kivy
+pip install Pillow
+pip install python-pptx
+pip install ffpyplayer
+
+pip install python-dotenv
+
+
+
+################          ubuntu               ####################
+sudo apt update
+sudo apt upgrade
+sudo add-apt-repository ppa:deadsnakes/p
+pa
+sudo apt install python3.9
+
+python3.9 -m venv venv39
+
+######################### this path is mine, replace your path ###############
+/home/crazy/Downloads/Work/Kivy/venv39/bin/python3.9 -Im ensurepip --upgrade --default-pip
+
+sudo apt install python3.9-venv
+
+python3.9 -m venv myenv
+
+source myenv/bin/activate
+
+pip3.9 install kivy
+
+pip3.9 install Pillow
+pip3.9 install python-pptx
+
+pip3.9 install websocket
+pip3.9 install websockets
+
+apt-get install libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-bad1.0-dev gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-tools gstreamer1.0-x gstreamer1.0-alsa gstreamer1.0-gl gstreamer1.0-gtk3 gstreamer1.0-qt5 gstreamer1.0-pulseaudio
+
+pip3.9 install ffpyplayer
+
+##########run command
+#######go to your workspace
+python3.9 main.py
