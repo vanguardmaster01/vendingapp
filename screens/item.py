@@ -29,10 +29,14 @@ load_dotenv()
 class ItemScreen(Screen, Observer):
     def __init__(self, **kwargs):
         super(ItemScreen, self).__init__(**kwargs)
-        self.itemId = None
+        # self.itemId = None
+        # self.caution = None
 
     def update(self):
         print("---tiem is updating---")
+        self.clear_widgets()
+        self.__init__()
+
         Clock.schedule_once(self.draw_page, 0)
 
     def set_item_id(self, id):

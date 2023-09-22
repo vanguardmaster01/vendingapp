@@ -32,6 +32,8 @@ class AdScreen(Screen, Observer):
         self.videoPlayerLayout.bind(on_touch_up=self.on_touch_screen)
         self.videoPlayerLayout.id = "video_layout"
         self.add_widget(self.videoPlayerLayout)
+        self.file_path = ''
+        self.current_video_id = -1
 
     def on_pre_enter(self, *args):
         self.update()
@@ -44,13 +46,30 @@ class AdScreen(Screen, Observer):
         ad = db.get_ad()
         if ad:
             if ad.type == 'MP4':
-                self.temp_file = utils.get_main_script_dir() + os.environ.get('adPath')
-                utils.write_to_file(ad.content, self.temp_file)
+                # adPath1 file is playing now ? 
+                self.temp_file = utils.get_main_script_dir() + os.environ.get('adPath1')
+                # self.file_path = utils.get_main_script_dir() + os.environ.get('adPath2')
+                if os.path.exists(self.temp_file):
+                    # if playing,  change file path
+                    self.file_path = utils.get_main_script_dir() + os.environ.get('adPath2')
+                    print('111111111111111111', self.file_path)
+                else:
+                    # not 
+                    self.file_path = self.temp_file
+                    self.temp_file = utils.get_main_script_dir() + os.environ.get('adPath2')
+                    print('2222222222222222222', self.file_path)
+
+                print('file_path', self.file_path)
+                utils.write_to_file(ad.content, self.file_path)
 
                 try:
-                    self.videoPlayerLayout.change_video(self.temp_file)
-                except:
-                    print("error")
+                    # pass
+                    # self.player = Video(source=self.file_path, state='play',
+                    #         options={'eos': 'loop'})
+                    # self.add_widget(self.player)
+                    self.videoPlayerLayout.change_video(self.file_path, self.temp_file)
+                except Exception as e:
+                    print("change_video_error", e)
                     pass
         
             elif ad.type == 'PPT':
@@ -121,7 +140,12 @@ class VideoPlayerLayout(BoxLayout):
         # Add the VideoPlayer widget to the BoxLayout
         self.add_widget(self.player)
     
-    def change_video(self, temp_file):
+    def on_eos(self):
+        print('play_finish')
+
+    def change_video(self, file, temp_file):
+        print('changechangechangechangechangechangechangechange')
         self.player.state = 'stop'
-        self.player.source = temp_file
+        self.player.source = file
         self.player.state = 'play'
+        os.remove(temp_file)

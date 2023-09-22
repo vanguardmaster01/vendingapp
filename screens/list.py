@@ -70,7 +70,6 @@ class ListScreen(Screen, Observer):
                 image = self.on_draw_item(product)
                 self.productImageHeight = image.height
                 container = BoxLayout()
-                print('window.width:', Window.width)
                 lp = (Window.width / 2 - self.productImageHeight - 10) / 2
                 container.padding = [lp ,10,lp,10]
                 container.size_hint_y = None
@@ -181,7 +180,6 @@ class ListScreen(Screen, Observer):
         return boxlayout
 
     def on_resize(self):
-        print('window_size: ', Window.width)
         self.on_draw_item_images()
         self.on_draw_category_images()
 
@@ -199,6 +197,7 @@ class ImageItem(Image):
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
             self.manager.current = 'Item'
+            # self.get_root_window().itemscreen
             self.manager.get_screen("Item").set_item_id(self.name)
 
 # top bar image

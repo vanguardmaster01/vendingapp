@@ -30,6 +30,7 @@ from kivy.uix.progressbar import ProgressBar
 from kivy.uix.popup import Popup
 import signal
 from Observers.Subject import subject
+from config import utils
 
 set_main_script_dir(os.path.dirname(__file__))
 loop = None
@@ -54,8 +55,8 @@ class MainApp(App):
         self.delta = 0
         self.advsleeptime = os.environ.get('advsleeptime')
         
-        # self._thread = threading.Thread(target=self.between_callback)
-        # self._thread.start()
+        self._thread = threading.Thread(target=self.between_callback)
+        self._thread.start()
 
         db.openDatabase() 
         db_create.create_tables()
@@ -79,7 +80,7 @@ class MainApp(App):
         height = int(os.environ.get('screenY'))
         Window.size = (width, height)
 
-        # self.countEvent = Clock.schedule_interval(self.count_time, 1)
+        self.countEvent = Clock.schedule_interval(self.count_time, 1)
         
         self.adScreen.bind(on_touch_down=self.touch_screen)
         self.listScreen.bind(on_touch_down=self.touch_screen)
@@ -108,10 +109,10 @@ class MainApp(App):
         self.delta += 1
         if self.delta > int(self.advsleeptime):
             self.sm.current = 'Ad'
-            self.listScreen.clear_widgets()
-            self.listScreen.__init__()
-            self.itemScreen.clear_widgets()
-            self.itemScreen.__init__()
+            # self.listScreen.clear_widgets()
+            # self.listScreen.__init__()
+            # self.itemScreen.clear_widgets()
+            # self.itemScreen.__init__()
             self.delta = 0
 
     def on_request_close(self, *args):
@@ -137,14 +138,13 @@ class MainApp(App):
         # box.add_widget(progress_bar)
         box.add_widget(mybutton)
         popup = Popup(title=title, content=box, size_hint=(None, None), size=(300, 150), auto_dismiss = False)
-        # mybutton.bind(on_release=self.wait_threadstop)
-        mybutton.bind(on_release=self.stop)
+        mybutton.bind(on_release=self.wait_threadstop)
+        # mybutton.bind(on_release=self.stop)
         popup.open()
     
     def between_callback(self):
         global loop
         try:
-            print('between_callbackbetween_callbackbetween_callbackbetween_callback')
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
             loop.run_until_complete(api.connect_to_server())

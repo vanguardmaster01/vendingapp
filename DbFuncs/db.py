@@ -183,7 +183,7 @@ def get_products():
 		#conn = sqlite3.connect(dbPath)
 		cursor = conn.cursor()
 
-		select_query = '''select * from products'''
+		select_query = '''select * from products order by itemno'''
 		cursor.execute(select_query)
 		records = cursor.fetchall()
 
@@ -291,7 +291,7 @@ def get_machines():
 		#conn = sqlite3.connect(dbPath)
 		cursor = conn.cursor()
 
-		select_query = '''select * from machines'''
+		select_query = '''select * from machines order by name'''
 		cursor.execute(select_query)
 		record = cursor.fetchall()
 		
