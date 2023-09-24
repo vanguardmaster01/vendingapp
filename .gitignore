@@ -19,3 +19,5 @@ __pycache__/
 apis/__pycache__
 
 requirements.txt
+
+ad/

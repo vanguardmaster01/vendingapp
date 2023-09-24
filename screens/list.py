@@ -197,7 +197,6 @@ class ImageItem(Image):
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
             self.manager.current = 'Item'
-            # self.get_root_window().itemscreen
             self.manager.get_screen("Item").set_item_id(self.name)
 
 # top bar image

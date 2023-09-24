@@ -1,10 +1,7 @@
 import os
-# dbPath = './DbFuncs/sql.db'
-
-# screenX = 600
-# screenY = 900
-
-# itemLength = 220
+import threading
+import datetime
+import base64
 
 MAIN_SCRIPT_DIR = None
 
@@ -22,11 +19,42 @@ def convert_to_blod_data(filename):
     return blobData
 
 # write 
-def write_to_file(data, filename):
-    # Convert binary data to proper format and write it on Hard Disk
+def write_to_file(data, dirPath):
+
+    # remove files in directory
+    remove_files_in_directory(dirPath)
+
+    filename = dirPath + '\\' + str(int(datetime.datetime.now().timestamp())) + '.mp4'
     with open(filename, 'wb') as file:
         file.write(data)
     print("Stored blob data into: ", filename, "\n")
+    return filename
+
+
+def remove_files_in_directory(directory):
+    # Iterate over all the files in the directory
+    for filename in os.listdir(directory):
+        file_path = os.path.join(directory, filename)
+        # Check if the current iteration is a file
+        try:
+            if os.path.isfile(file_path):
+                # Delete the file
+                os.remove(file_path)
+                print(f"Deleted file: {file_path}")
+        except:
+            print('delete_file_error_continue-----------')
+            continue
+
+
+
+FILELOCK_LOCK = 0
+fileLockList = []
+def initFileLock():
+    global fileLockList
+    fileLockList.append(threading.Lock())
+
+def getFileLock(file):
+    return fileLockList[file]
 
 
 THREAD_INIT = 0

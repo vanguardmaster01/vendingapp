@@ -14,14 +14,16 @@ from screens.list import ListScreen
 from screens.ad import AdScreen
 import os
 from dotenv import load_dotenv
+
 load_dotenv()
+
 import apis.api as api
 import asyncio
 from kivy.clock import Clock
 import threading
 import time
 from config.utils import initThreadLock, setThreadStatus, getThreadStatus, THREAD_INIT, THREAD_RUNNING, THREAD_STOPPING, THREAD_FINISHED
-from config.utils import set_main_script_dir
+from config.utils import set_main_script_dir, initFileLock
 from kivy.config import Config
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
@@ -31,6 +33,7 @@ from kivy.uix.popup import Popup
 import signal
 from Observers.Subject import subject
 from config import utils
+from kivy.cache import Cache
 
 set_main_script_dir(os.path.dirname(__file__))
 loop = None
@@ -51,6 +54,7 @@ class MainApp(App):
     def build(self):
 
         initThreadLock()
+        initFileLock()
 
         self.delta = 0
         self.advsleeptime = os.environ.get('advsleeptime')
@@ -64,12 +68,15 @@ class MainApp(App):
         Builder.load_file('./kv/list.kv')
         
         self.sm = self.WindowManager()
+
         self.adScreen = AdScreen(name='Ad')        
         self.listScreen = ListScreen(name='List')        
         self.itemScreen = ItemScreen(name='Item') 
+        
         self.sm.add_widget(self.adScreen)
         self.sm.add_widget(self.listScreen)
         self.sm.add_widget(self.itemScreen)
+
         subject.add_observer(self.adScreen, "Ad")
         subject.add_observer(self.listScreen, "List")
         #subject.add_observer(self.itemScreen, "Item")
@@ -109,6 +116,9 @@ class MainApp(App):
         self.delta += 1
         if self.delta > int(self.advsleeptime):
             self.sm.current = 'Ad'
+
+            # if use below code, empty screen is displayed navigating screens
+
             # self.listScreen.clear_widgets()
             # self.listScreen.__init__()
             # self.itemScreen.clear_widgets()
@@ -117,6 +127,7 @@ class MainApp(App):
 
     def on_request_close(self, *args):
         print('request_close')
+        self.remove_cache()
         self.textpopup(title='Exit', text='Are you sure?')
         return True
     
@@ -126,6 +137,7 @@ class MainApp(App):
             self.countEvent.cancel()
             setThreadStatus(THREAD_STOPPING)
             self.stopEvent = Clock.schedule_interval(self.wait_apithread_stop, 0.2)
+            # self.remove_cache()
             # loop.stop()
             # exit(0)
         else : 
@@ -141,7 +153,14 @@ class MainApp(App):
         mybutton.bind(on_release=self.wait_threadstop)
         # mybutton.bind(on_release=self.stop)
         popup.open()
-    
+
+    def remove_cache(self):
+        dirPath = os.path.dirname(__file__)
+        ad1 = dirPath + os.environ.get('adPath1')
+        ad2 = dirPath + os.environ.get('adPath2')
+        Cache.append('kv.resourcefind', ad1, None)
+        Cache.append('kv.resourcefind', ad2, None)
+
     def between_callback(self):
         global loop
         try:

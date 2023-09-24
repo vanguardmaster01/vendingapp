@@ -81,7 +81,7 @@ class ItemScreen(Screen, Observer):
         self.ids.item_image_layout.add_widget(image)
 
         self.draw_label(product.itemno)
-        self.draw_label('600')
+        self.draw_label(str(product.stock))
         self.draw_label(product.nicotine)
         self.draw_label(product.batterypack)
         self.draw_label(product.tankvolumn)
